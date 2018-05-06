@@ -8,7 +8,7 @@ var app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 
-
+//****************Express Middleware***************
 app.use((req, res, next) => {
   var now = new Date().toString();
   var log = `${now}: ${req.method} ${req.url}`;
@@ -22,13 +22,16 @@ app.use((req, res, next) => {
   next();
 });
 
+//Uncomment for Maintenance
 // app.use((req, res, next) => {
 //   res.render('maintenance.hbs');
 // });
 
 app.use(express.static(__dirname + '/public'));
 
+//**********************************************
 
+//***************Handlebars Helpers*************
 hbs.registerHelper('getCurrentYear', () => {
   return new Date().getFullYear();
 });
@@ -37,6 +40,9 @@ hbs.registerHelper('screamIt', (text) => {
   return text.toUpperCase();
 })
 
+//**********************************************
+
+//*****************Page Routes******************
 app.get('/', (req, res) => {
   res.render('home.hbs', {
     pageTitle: 'Home Page',
@@ -51,12 +57,21 @@ app.get('/about', (req, res) => {
   });
 })
 
+app.get('/projects', (req, res) => {
+  res.render('projects.hbs', {
+    pageTitle: 'Project Page'
+  });
+})
+
 app.get('/bad', (req, res) => {
   res.send({
     errorMessage: 'Error Loading Page',
   });
 });
 
+//**********************************************
+
+//*****************START SERVER*****************
 app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
 });
